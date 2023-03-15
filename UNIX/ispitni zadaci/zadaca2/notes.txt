@@ -1,0 +1,43 @@
+prvo kako ke gi ispecateme site procesi na odreden korisnik
+
+ps -ef = korisnik | id na proces | parent process id |
+
+ako imam
+
+xxxxx
+yyyyy
+zzzzz
+
+wc -l = ovaa komanda ke vrne 3, oti ima 3 linii tam
+
+>> upotrebuvam oti treba da se append prave na poveke info
+ako e > togaj ke zapisa nesto pa ke go prebrisa i dr ke stae
+nie treba se da zapiseme zatoa >>
+
+less out.txt - da ispecate so ima u out.txt fileo
+
+
+
+#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+        echo "USAGE: `basename $0` index"
+        exit 1;
+fi
+
+if [ -f out.txt ]
+then
+        rm out.txt
+fi
+
+processes=`ps -ef | grep ^$1 | awk '{print $2;}'`
+
+for ps in $processes
+do
+        count=`ps -ef | grep ^$1 | awk '{print $3}' | \
+        grep ^${ps}$ | wc -l`
+        echo $ps $count >> out.txt
+done
+
+cat out.txt

@@ -1,0 +1,275 @@
+ls - lista sodrzina od folder i prikazuva na ekran
+
+#!/pateka do shell
+
+ls -l = 
+
+ctrl + x = save?
+
+chmod u+x script.sh - davame execute permisii
+
+bash script.sh - izvrsuvanje na script
+
+ls # komanda za listanje na datoteki
+site promenlivi se stringovi(niza od znaci)
+X="Zdravo" - davame vrednost na X
+X = "Zdravo" - NE, ke jave greska
+
+---skripti---
+testSkripta.sh
+
+tS2.sh -> 
+
+#za sekoj if sleduva then
+#if uslov1 then izraz1
+#elif uslov2 then izraz2
+#else izraz3
+#fi - kraj na if uslovo
+
+#za proverka na uslovi pri pisanje komandi
+#koriste se test so []
+#dokolku komanda se izvrsi uspesno izlezen status = 0
+
+#prva sintaksa
+#test operand1 operator operand2
+#vtora sintaksa
+#[ operand1 operator operand2 ]
+#tuka mora da se vnimava mn na prazni mesta!!!
+
+--while--
+while uslov
+  do lista
+done
+
+while command1
+  do
+     list1
+	while command2
+	  do
+		list2
+	  done
+	list3
+  done
+
+---zadaci---
+
+1.Write a shell script which will check if the shell 
+environment is BASH. If not, it should print out the
+actual shell environment, using the $SHELL variable.
+
+task1.sh -> 
+
+#!/bin/bash
+
+if [ "$SHELL" = "/bin/bash" ]
+then
+        echo "BASH e okolinata"
+else
+        echo "Ne e BASH, ama e $SHELL"
+fi
+
+2.Write a shell script which will check if 
+the first command line argument is 1, 2 or 3, 
+and will print out corresponding messages. 
+If the argument is different from these values,
+it should print out an error message.
+
+task2.sh -> 
+
+#!/bin/bash
+
+if [ "$1" = "1" ]
+then
+        echo "You picked the first option"
+elif [ "$1" = "2" ]
+then
+        echo "You picked the second option"
+elif [ "$1" = "3" ]
+then
+        echo "You picked the third option"
+else
+        echo "You didnt pick anything"
+fi
+
+3.Rewrite Task 2, such that you use a case structure,
+instead of the if statements.
+
+task3.sh ->
+
+case $1 in
+        1) echo "You picked the first option";;
+        2) echo "You picked the second option";;
+        3) echo "You picked the third option";;
+        *) echo "You didnt pick anything"
+esac
+
+4. Write a shell script called 'smartzip',
+which will do automatic unpacking of 
+bzip2, gzip and zip archive files. 
+
+
+5.Write a shell script which will count 
+down seconds until the beginning of a match.
+
+task5.sh -> 
+
+#!/bin/bash
+
+count=$1
+
+while [ $count -gt 0 ] #se dodeka count > 0, -gt=$
+do
+        echo $count
+        count=$(( $count - 1 ))
+        sleep 1 #spie skriptata za 1 sec
+done
+echo "The match has started"
+
+6.
+Write a shell script which will print out the 
+numbers from 0 to 20.
+
+task6.sh -> 
+
+#!/bin/bash
+
+count=0
+
+while [ $count -le 20 ] #count less than or equal to 20
+do
+        echo $count
+        count=$(( $count + 1 ))
+        sleep 1
+done
+echo "I have counted from 0 to 20"
+
+7. Write a shell script which will show the uppercase 
+letters A,B and C, one by one, using a for structure.
+
+task7.sh ->
+
+for var in A B C
+do
+        echo $var
+done
+
+8. Write a shell script which will form plural of a 
+few nouns in English, based on their type.
+
+task8.sh -> 
+
+fruits="Apple Pear Tomato Peach Grape"
+
+for fruit in $fruits
+do
+        if [ $fruit = "Tomato" ] || [ $fruit = "Peach" ]
+        then
+                echo "Mnozina: ${fruit}es"
+        else
+                echo "Mnozina: ${fruit}s"
+        fi
+done
+
+9. Write a shell script which will show the content 
+of an arbitrary number of text files.
+
+task9.sh ->
+
+for file in $*
+do
+        if [ -d "$file" ] # ako moze da read na file
+        then
+                echo "--- $file ---"
+                cat $file
+        else
+                echo "error: file is not readable"
+        fi
+done
+
+10. Write a shell script called ‘ren’, which will 
+rename an arbitrary number of files using the 
+sed and the tr commands.
+
+task10.sh -> 
+
+11.Multiply a value from command line 3.5 times.
+Use two decimal spaces.
+
+task11 ->
+
+#!/bin/bash
+
+PRICE=$1
+
+PRICE=`echo "scale=2; 3.5 * $PRICE"|bc`
+
+echo $PRICE
+
+12. Write a function toLower() which will convert 
+the script arguments into lower case 
+and show them on the screen.
+
+task12 -> 
+
+#!/bin/bash
+
+STR=$1
+
+toLower(){
+        echo $STR | tr '[A-Z]' '[a-z]';
+}
+
+toLower $STR
+
+13. Write a shell script which uses a select loop 
+to list all files directories in the current directory,
+and to allow the user to select one and see its content.
+Use the ‘Exit Program’ string to end the loop.
+If the user chooses something which is not a file, the 
+script should identify this.
+
+task13.sh -> 
+
+allFiles=`ls` # site files se u ls komandata!
+
+select file in $allFiles "ExitProgram" # ako nema files Exit
+do
+        fi
+        if [ "$file" = "ExitProgram" ]
+        then
+                break # ako file e ExitProgram da break
+        fi
+        if [ ! -f "$file" ] # ako ne e file
+        then
+                echo "not a regular file"
+        fi
+
+        echo $file # pecati ime
+        cat $file # pecati sodrzina
+done
+
+14. Write a sed command which uses the output 
+from ls –l as input, and will only print out 
+the permissions and names of files. Directories, 
+links and hidden files should not be shown.
+
+task14.sh -> 
+ls –l | sed –e '/^[^-]/d' –e 's/ .*:[0-9][0-9] */ /'
+-e = evaluate
+
+prvio -e = site so ne pocnuvat so - izbrisi
+/d = izbrisi
+^ = negacija
+
+vtorio -3 = zemi go delo so e megju edno prazno mesto
+i zameni go so ' '
+
+15. Write an awk script which will print out 
+the fields from fruit_prices.txt in a reverse order
+
+Fruit Price/lbs Quantity
+Banana $0.89 100
+Peach $0.79 65 
+Kiwi $1.50 22 
+Pineapple $1.29 35 
+Apple $0.99 78

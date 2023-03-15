@@ -1,0 +1,52 @@
+last e komanda za login logs
+grep e komanda za filtriranje
+
+[203213@os ~]$ last | grep ^203213 | awk '{ print $10; }'
+| - pipe
+grep - filter
+awk '{ print $10; }' - 10tata kolona
+
+dobih : (01:33)...
+
+sea treba zagradi da trgnam 
+last | grep ^203213 | awk '{ print $10; }' | sed 's/(//'
+ovoa vika sed 's/(//' - zemi ja ( i smeni ja so nisto
+
+sea treba da gi odvoam od :
+| awk -F : '{print$1,$2}'
+vaka go filtirame po : i go trgame :
+
+| awk -F : '{print$1*60+$2}'
+
+vaka konvertirame casovi u minuti i dobivame se u min
+last | grep ^203213 | awk '{ print $10; }' | sed 's/(//' | sed 's/)//' | awk -F : '{print$1*60+$2}'last | grep ^203213 | awk '{ print $10; }' | sed 's/(//' | sed 's/)//' | awk -F : '{print$1*60+$2}'
+
+last | grep ^203213 | awk '{ print $10; }' | sed 's/(//' | sed 's/)//' | 
+awk -F : 'BEGIN {total=0;} {total+=$1*60+$2} END {print total;}'
+
+zadaca1 :
+
+#!/bin/bash
+
+#eden argument treba
+# $# dava site argumenti
+if [ $# -ne 1 ] #-ne e not equal
+then
+        echo "USAGE: `basename $0` username"
+        exit 1;
+fi # ovao bese if uslov samo da vide dali prima 1 argument
+
+
+if [ -f out.txt ]
+then
+        rm out.txt # ako postoe out.txt, da go izbriseem
+fi
+
+total=`last | grep ^$1 | awk '{ print $10; }' | \
+sed 's/(//' | sed 's/)//' | \
+awk -F: 'BEGIN {total=0;} {total+=$1*60+$2} END { print total; }'`
+# \ e za nov red, pazi na prazni mesta
+
+echo $total > out.txt
+
+cat out.txt
